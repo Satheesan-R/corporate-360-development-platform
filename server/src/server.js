@@ -1,11 +1,24 @@
-const express = require('express');
-const app = express();
-const port = 5000;
+require("dotenv").config(); // Load environment variables from .env file FIRST
 
-app.get('/', (req, res) => {
-   res.send("360 backend server is running...");
+const express = require("express");
+const connectDB = require("./config/database");
+
+const app = express();
+
+// Connect to Database
+connectDB();
+
+// Middleware
+app.use(express.json());
+
+// Basic Route
+app.get("/", (req, res) => {
+  res.send("API is running...");
 });
 
-app.listen(port, () => {
-   console.log(`Server is running on port ${port}`);
+// Port configuration
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
