@@ -4,9 +4,14 @@ const router = express.Router();
 
 
 const {
-createEmployee
+createEmployee,getProfile
 }=require("../controllers/employeeController");
 
+const {
+protect
+}
+=
+require("../../../middlewares/authMiddlewares");
 
 
 router.post(
@@ -14,6 +19,11 @@ router.post(
 createEmployee
 );
 
+router.get(
+"/profile",
+protect,
+getProfile
+);
 
 
 module.exports = router;

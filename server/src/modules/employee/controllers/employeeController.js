@@ -1,11 +1,11 @@
-const User = require("../../auth/models/User");
-const Employee = require("../models/Employee");
+const User = require("../../auth/models/user");
+const Employee = require("../models/employee");
 const crypto = require("crypto");
 
 
-const createEmployee = async(req,res)=>{
+const createEmployee = async (req, res) => {
 
-    try{
+    try {
 
         const {
             firstName,
@@ -23,10 +23,10 @@ const createEmployee = async(req,res)=>{
         });
 
 
-        if(existingUser){
+        if (existingUser) {
 
             return res.status(400).json({
-                message:"User already exists"
+                message: "User already exists"
             });
 
         }
@@ -35,8 +35,8 @@ const createEmployee = async(req,res)=>{
         // Generate activation token
 
         const token = crypto
-        .randomBytes(32)
-        .toString("hex");
+            .randomBytes(32)
+            .toString("hex");
 
 
         // Create User Account
@@ -45,14 +45,14 @@ const createEmployee = async(req,res)=>{
 
             email,
 
-            role:"EMPLOYEE",
+            role: "EMPLOYEE",
 
-            status:"INVITED",
+            status: "INVITED",
 
-            activationToken:token,
+            activationToken: token,
 
             activationExpires:
-            Date.now() + 24*60*60*1000
+                Date.now() + 24 * 60 * 60 * 1000
 
         });
 
@@ -62,8 +62,8 @@ const createEmployee = async(req,res)=>{
 
         const employee = await Employee.create({
 
-            userId:user._id,
-            employeeId:`EMP-${Date.now()}-${crypto.randomBytes(3).toString("hex").toUpperCase()}`,
+            userId: user._id,
+            employeeId: `EMP-${Date.now()}-${crypto.randomBytes(3).toString("hex").toUpperCase()}`,
 
             firstName,
 
@@ -75,12 +75,10 @@ const createEmployee = async(req,res)=>{
 
         });
 
-
-
         res.status(201).json({
 
             message:
-            "Employee created successfully",
+                "Employee created successfully",
 
             employee
 
@@ -88,11 +86,11 @@ const createEmployee = async(req,res)=>{
 
 
     }
-    catch(error){
+    catch (error) {
 
         res.status(500).json({
 
-            message:error.message
+            message: error.message
 
         });
 
@@ -100,7 +98,15 @@ const createEmployee = async(req,res)=>{
 
 };
 
+const getProfile = async (req, res) => {
+    res.json({
+        message: "Protected route",
+        user: req.user,
+    });
+};
 
-module.exports={
-    createEmployee
+
+module.exports = {
+    createEmployee,
+    getProfile
 };
