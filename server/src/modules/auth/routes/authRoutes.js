@@ -4,14 +4,20 @@ const router=express.Router();
 
 
 const {
-activateAccount
-}=require("../controllers/authController");
+	activateAccount,
+	login,
+} = require("../controllers/authController");
 
 
 
 router.post(
 "/activate",
 activateAccount
+);
+
+router.post(
+"/login",
+login
 );
 
 
