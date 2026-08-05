@@ -1,9 +1,14 @@
 import {useState} from "react";
+import {useNavigate} from "react-router-dom";
 import {loginUser} from "../api/authApi";
 import {saveToken} from "../utils/token";
+import {saveUser}  from "../utils/user";
 
 
 function Login(){
+
+
+const navigate=useNavigate();
 
 
 const [email,setEmail]=useState("");
@@ -27,6 +32,32 @@ password
 
 });
 
+
+saveToken(data.token);
+
+saveUser(data.user);
+
+if(data.user.role==="EMPLOYEE"){
+
+navigate("/employee/dashboard");
+
+}
+
+else if(
+data.user.role==="HR_MANAGER"
+){
+
+navigate("/hr/dashboard");
+
+}
+
+else if(
+data.user.role==="SYSTEM_ADMIN"
+){
+
+navigate("/admin/dashboard");
+
+}
 
 console.log(data);
 
